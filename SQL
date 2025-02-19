@@ -1,0 +1,110 @@
+create table Emp5(
+	EmpNo int primary key,
+	Ename varchar(30)
+);
+alter table Emp5 add email varchar(30);
+
+alter table Emp5 add Department varchar(20), Salary Decimal , JoinDate Date;
+select * from Emp5;
+
+alter table Emp5 drop column Department;
+
+drop table Emp5;
+
+INSERT INTO Emp5 VALUES
+(101, 'Ashwini Patil','ashwini.patil@example.com','HR', 50000.00, '2022-01-15' ),
+(102, 'Neha Verma','neha.verma@example.com','Finance', 60000.00, '2021-03-22'  ),
+(103, 'Rajesh Kumar', 'rajesh.kumar@example.com', 'IT',  75000.00,'2020-07-10'),
+(104, 'Priya Singh','priya.singh@example.com','HR', 55000.00,  '2023-05-01'),
+(105, 'Vikram Patel','vikram.patel@example.com', 'Finance', 65000.00, '2019-11-30' );
+
+------------------------------------------------------------------------------------------
+create table Orders1(
+	orderID int primary key,
+	customerName varchar(30),
+	productName varchar(30),
+	Quantity int,
+	Price decimal,
+	OrderDate date
+);
+select * from Orders1;
+INSERT INTO Orders1 (orderID, customerName, productName, Quantity, Price, OrderDate) VALUES
+(1, 'John Doe', 'Laptop', 1, 75000.00, '2023-01-15'),
+(2, 'Jane Smith', 'Smartphone', 2, 40000.00, '2023-02-20'),
+(3, 'Michael Brown', 'Tablet', 1, 30000.00, '2023-03-05'),
+(4, 'Emily Davis', 'Headphones', 3, 4500.00, '2023-04-10'),
+(5, 'David Wilson', 'Monitor', 2, 15000.00, '2023-05-25'),
+(6, 'Sophia Johnson', 'Keyboard', 5, 2000.00, '2023-06-15'),
+(7, 'James Lee', 'Mouse', 4, 1500.00, '2023-07-20'),
+(8, 'Olivia Martinez', 'Printer', 1, 12000.00, '2023-08-30'),
+(9, 'Liam Anderson', 'External Hard Drive', 2, 6000.00, '2023-09-10'),
+(10, 'Emma Thomas', 'Webcam', 3, 3500.00, '2023-10-05');
+
+update Orders1 set Quantity=4 where orderID=1; 
+
+delete Orders1 where orderID=10;
+-----------------------------------------------------------------------------------------------------
+
+create table Patients4(
+	PatientId int primary key identity(1,1),
+	Pname varchar(3),
+	age int,
+	Disease varchar(20),
+	DoctorAssigned varchar(30)
+);
+
+INSERT INTO Patients4 (Pname, age, Disease, DoctorAssigned) VALUES
+('Raj', 45, 'Diabetes', 'Dr. Sharma'),
+('Avi', 30, 'Hypertension', 'Dr. Mehta'),
+('Sam', 50, 'Asthma', 'Dr. Gupta'),
+('Ana', 25, 'Flu', 'Dr. Patel'),
+('Tom', 60, 'Arthritis', 'Dr. Rao'),
+('Eva', 35, 'Migraine', 'Dr. Singh'),
+('Max', 40, 'Allergy', 'Dr. Desai');
+
+INSERT INTO Patients4 (Pname, age, Disease, DoctorAssigned) VALUES ('Ali', 66, 'Allergy', 'Dr. Desai');
+INSERT INTO Patients4 (Pname, age, Disease, DoctorAssigned) VALUES ('Ash', 67, 'Allergy', 'Dr. Desai');
+
+
+select * from Patients4 where age>60;
+
+select * from Patients4 where DoctorAssigned='Dr. Desai';
+
+select count(*) as countPatient,Disease from Patients4 group by Disease;
+
+
+
+----------------------------------------------------------------------------------------------------------------------
+
+create table Bookings2(
+	BookingId int primary key,
+	customerName varchar(20),
+	MovieName varchar(20),
+	seatBooked int,
+	TotalPrice int
+);
+truncate table Bookings2;
+
+begin transaction;
+
+INSERT INTO Bookings2 (BookingId, customerName, MovieName, seatBooked, TotalPrice)
+VALUES
+(1, 'Rahul Sharma', 'Inception', 5, 1500),
+(2, 'Anita Mehta', 'Interstellar', 3, 1200),
+(3, 'Vijay Kumar', 'The Dark Knight', 2, 800),
+(4, 'Priya Patel', 'Dunkirk', 4, 1600);
+
+commit;
+
+begin transaction;
+update Bookings2 set seatBooked=5, TotalPrice=2000 where BookingId=2;
+SAVE transaction beforeCancel;
+
+
+delete from Bookings2 where BookingId=2;
+
+rollback transaction beforeCancel;
+rollback transaction;
+commit;
+
+select * from Bookings2;
